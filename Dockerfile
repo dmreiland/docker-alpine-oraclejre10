@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-glibc:alpine-3.7
+FROM frolvlad/alpine-glibc:alpine-3.7_glibc-2.26
 
 ENV JAVA_VERSION=10 \
     JAVA_UPDATE=0.1 \

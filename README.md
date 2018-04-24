@@ -5,7 +5,7 @@
 OracleJRE 10 Docker image
 ========================
 
-Thanks to [frovlad](https://github.com/frol/docker-alpine-oraclejdk8) and his excellent Java8 builds for providing a solid foundation
+Thanks to [frol](https://github.com/frol/docker-alpine-oraclejdk8) and his excellent Java8 builds for providing a solid foundation
 
 This image is based on Alpine Linux image, which is only a 5MB image, and contains
 [OracleJRE 10](http://www.oracle.com/technetwork/java/javase/overview/index.html).
