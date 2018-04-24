@@ -6,8 +6,18 @@ ENV JAVA_VERSION=10 \
     JAVA_PATH=fb4372174a714e6b8c52526dc134031e \
     JAVA_HOME="/usr/lib/jvm/default-jvm"
 
-RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip && \
+RUN apk add --no-cache --virtual=build-dependencies wget curl ca-certificates unzip binutils xz && \
     cd "/tmp" && \
+    curl -Ls https://www.archlinux.org/packages/core/x86_64/gcc-libs/download > /tmp/gcc-libs.tar.xz && \
+    mkdir /tmp/gcc && \
+    tar -xf /tmp/gcc-libs.tar.xz -C /tmp/gcc && \
+    mv /tmp/gcc/usr/lib/libgcc* /tmp/gcc/usr/lib/libstdc++* /usr/glibc-compat/lib && \
+    strip /usr/glibc-compat/lib/libgcc_s.so.* /usr/glibc-compat/lib/libstdc++.so* && \
+    curl -Ls https://www.archlinux.org/packages/core/x86_64/zlib/download > /tmp/zlib.tar.xz && \
+    mkdir /tmp/zlib && \
+    tar -xf /tmp/zlib.tar.xz -C /tmp/zlib && \
+    mv /tmp/zlib/usr/lib/libz* /usr/glibc-compat/lib && \
+    strip /usr/glibc-compat/lib/libz.so.* && \
     wget --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
         "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}.${JAVA_UPDATE}+${JAVA_BUILD}/${JAVA_PATH}/serverjre-${JAVA_VERSION}.${JAVA_UPDATE}_linux-x64_bin.tar.gz" && \
     tar -xzf "serverjre-${JAVA_VERSION}.${JAVA_UPDATE}_linux-x64_bin.tar.gz" && \
@@ -35,5 +45,5 @@ RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip &
        "$JAVA_HOME/jre/lib/amd64/libgstreamer-lite.so" \
        "$JAVA_HOME/jre/lib/amd64/"libjavafx*.so \
        "$JAVA_HOME/jre/lib/amd64/"libjfx*.so && \
-    apk del build-dependencies && \
-    rm "/tmp/"*
+       apk del build-dependencies wget curl unzip binutils xz && \
+       rm -rf "/tmp/"*
